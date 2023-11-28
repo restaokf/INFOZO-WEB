@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+	<!-- Metadata -->
+	<meta charset="utf-8">
+	<meta name="viewport" content="initial-scale=1,user-scalable=no,maximum-scale=1,width=device-width">
+	<meta name="mobile-web-app-capable" content="yes">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="author" content="Resta Oktafiati">
+	<meta name="description" content="leaflet basic">
+
+	<!-- Judul pada tab browser -->
+	<title>INFOZO - Zonasi Bantul</title>
+
+	<!-- Leaflet CSS Library -->
+	<link rel="stylesheet" href="https://unpkg.com/leaflet@1.5.1/dist/leaflet.css">
+
+	<!-- Tab browser icon -->
+	<link rel="icon" type="image/x-icon" href="https://kampungdesigner.com/wp-content/uploads/edd/2018/09/Logo-Kabupaten-Bantul-Vector.png">
+
+	<!-- Search CSS Library -->
+	<link rel="stylesheet" href="assets/plugins/leaflet-search/leaflet-search.css">
+
+	<!-- Geolocation CSS Library for Plugin -->
+	<link rel="stylesheet" href="https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-
+	locatecontrol/v0.43.0/L.Control.Locate.css">
+
+	<!-- Leaflet Mouse Position CSS Library -->
+	<link rel="stylesheet" href="assets/plugins/leaflet-mouseposition/L.Control.MousePosition.css">
+
+	<!-- Leaflet Measure CSS Library -->
+	<link rel="stylesheet" href="assets/plugins/leaflet-measure/leaflet-measure.css">
+
+	<!-- EasyPrint CSS Library -->
+	<link rel="stylesheet" href="assets/plugins/leaflet-easyprint/easyPrint.css">
+
+	<!-- Leaflet Clustering CSS Library -->
+	<link rel="stylesheet" href="Leaflet.markercluster-1.4.1/dist/MarkerCluster.css">
+	<link rel="stylesheet" href="Leaflet.markercluster-1.4.1/dist/MarkerCluster.Default.css" />
+
+	<!-- Leaflet Routing Machine CSS Library -->
+	<link rel="stylesheet" href="leaflet-routing-machine-3.2.12/dist/leaflet-routing-machine.css"/>
+
+	<!-- Bootstrap CSS Library -->
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+
+
+
+
+		<style>
+		/* Tampilan peta fullscreen */
+		html, body, #map {
+		height: 100%;
+		width: 100%;
+		margin: 0px;
+		}
+
+		/* Background pada Judul */
+		*.info {
+		padding: 6px 8px;
+		font: 14px/16px Arial, Helvetica, sans-serif;
+		background: white;
+		background: rgba(142, 146, 223, 0.8);
+		box-shadow: 0 0 15px rgb(255, 255, 255);
+		border-radius: 5px;
+		text-align: center;
+		}
+		.info h2 {
+		margin: 0 0 5px;
+		color: rgb(12, 11, 11);
+		}
+
+
+		</style>
+
+	</head>
+
+	<body>
+
+
+		<!-- Leaflet JavaScript Library -->
+		<script src="https://unpkg.com/leaflet@1.5.1/dist/leaflet.js"></script>
+
+		<!-- Search JavaScript Library -->
+		<script src="assets/plugins/leaflet-search/leaflet-search.js"></script>
+
+		<!-- Geolocation Javascript Library -->
+		<script src="https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-
+		locatecontrol/v0.43.0/L.Control.Locate.min.js"></script>
+
+		<!-- Leaflet Mouse Position JavaScript Library -->
+		<script src="assets/plugins/leaflet-mouseposition/L.Control.MousePosition.js"></script>
+
+		<!-- Leaflet Measure Javascript Library -->
+		<script src="assets/plugins/leaflet-measure/leaflet-measure.js"></script>
+
+		<!-- EasyPrint JavaScript Library -->
+		<script src="assets/plugins/leaflet-easyprint/leaflet.easyPrint.js"></script>
+
+		<div id="map"></div>
+		<script src="Leaflet/leaflet.ajax.js"></script>
+		<script src="Leaflet/leaflet.ajax.min.js"></script>
+
+		<!-- Leaflet Marker Cluster Javascript Library -->
+		<script src="Leaflet.markercluster-1.4.1/dist/leaflet.markercluster.js"></script>
+
+		<!-- Leaflet Routing Machine Javascript Library -->
+		<script src="leaflet-routing-machine-3.2.12/dist/leaflet-routing-machine.js"></script>
+		<script src="leaflet-routing-machine-3.2.12/examples/Control.Geocoder.js"></script>
+
+		<!-- Bootstrap Javascript Library -->
+		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
+
+
+		<script>
+
+		/* Initial Map */ 
+		var map = L.map('map').setView([-7.913378434887739, 110.35173612973769],12); //lat, long, zoom
+
+
+		/* Tile Basemap */
+
+		var basemap2 = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+			maxZoom: 19,
+			attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+		});
+
+		var basemap4 = L.tileLayer('https://{s}.tile-cyclosm.openstreetmap.fr/cyclosm/{z}/{x}/{y}.png', {
+			maxZoom: 20,
+			attribution: '<a href="https://github.com/cyclosm/cyclosm-cartocss-style/releases" title="CyclOSM - Open Bicycle render">CyclOSM</a> | Map data: &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+		});
+
+		basemap2.addTo(map);
+
+		var zona1 = {
+			"color": "blue",
+			"weight": 1,
+			"opacity": 0.65
+		};
+
+		var zona5 = {
+			"color": "#e30273",
+			"weight": 1,
+			"opacity": 0.65
+		};
+
+		var zona3 = {
+			"color": "green",
+			"weight": 1,
+			"opacity": 0.65
+		};
+
+		var zona4 = {
+			"color": "cyan",
+			"weight": 1,
+			"opacity": 0.65
+		};
+
+		var zona2 = {
+			"color": "purple",
+			"weight": 1,
+			"opacity": 0.65
+		};
+
+		var buffer = {
+			"color": "#010169",
+			"weight": 1,
+			"opacity": 0.65
+		};
+
+		
+
+		function popUp(f,l){
+			var out = [];
+			if (f.properties){
+				for(key in f.properties){
+					out.push(key+": "+f.properties[key]);
+				}
+				l.bindPopup(out.join("<br />"));
+			}
+		}
+
+		var jsonTest = new L.GeoJSON.AJAX(["ZONA1.geojson"],{style: zona1}).addTo(map);
+		var jsonTest1 = new L.GeoJSON.AJAX(["ZONA2.geojson"],{style: zona2}).addTo(map);
+		var jsonTest2 = new L.GeoJSON.AJAX(["ZONA3.geojson"],{style: zona3}).addTo(map);
+		var jsonTest3 = new L.GeoJSON.AJAX(["ZONA4.geojson"],{style: zona4}).addTo(map);
+		var jsonTest4 = new L.GeoJSON.AJAX(["ZONA5.geojson"],{style: zona5}).addTo(map);
+		var jsonTest5 = new L.GeoJSON.AJAX(["zona_ling.geojson"],{style: buffer}).addTo(map);
+
+		jsonTest.bindPopup("ZONA 1: Bantul, Sewon, Jetis");
+		jsonTest1.bindPopup("ZONA 2: Bambanglipuro, Pandak, Pajangan, Kasihan, Sedayu");
+		jsonTest2.bindPopup("ZONA 3: Pundong, Kretek, Sanden, Srandakan");
+		jsonTest3.bindPopup("ZONA 4: Banguntapan, Piyungan");
+		jsonTest4.bindPopup("ZONA 5: Imogiri, Dlingo, Pleret");
+		var markerClusterGroup = new L.markerClusterGroup({chunkedLoading: true});
+
+		/* Judul dan Subjudul */
+		var title = new L.Control();
+		title.onAdd = function (map) {
+		this._div = L.DomUtil.create('div', 'info');
+		this.update();
+		return this._div;
+		};
+		title.update = function () {
+		this._div.innerHTML = '<h2>INFOZO| SISTEM INFORMASI ZONASI SEKOLAH </h2> WILAYAH BANTUL'
+		};
+		title.addTo(map);
+
+		/* Layer Marker */ 
+		var marker1 = L.marker([-7.895015244,	110.3385341]); 
+		marker1.addTo(map); 
+		marker1.bindPopup('<h5>SMPN 1 BANTUL</h5> Jl. Ra. Kartini No.44, Bantul Timur, Trirenggo, Kec. Bantul, Kabupaten Bantul, Daerah Istimewa Yogyakarta 55714');  
+		
+		var marker2 = L.marker([-7.874897815,	110.3358415]); 
+		marker2.addTo(map); 
+		marker2.bindPopup('<h5>SMPN 2 BANTUL</h5> Jalan Raya Bantul No. 2/III, Melikan Lor, Bantul, Kec. Bantul, Kabupaten Bantul, Daerah Istimewa Yogyakarta 55186');  
+		
+		var marker3 = L.marker([-7.905177113,	110.3307387]); 
+		marker3.addTo(map); 
+		marker3.bindPopup('<h5>SMPN 3 BANTUL</h5> JL Peni, Palbapang, Yogyakarta, Tajeman, Palbapang, Bantul, Bantul Regency, Daerah Istimewa Yogyakarta'); 
+		
+		var marker4 = L.marker([-7.861426827,	110.3540607]); 
+		marker4.addTo(map); 
+		marker4.bindPopup('<h5>SMPN 1 SEWON </h5> Jl. Parangtritis No.1234, Dadapan, Timbulharjo, Kec. Sewon, Kabupaten Bantul, Daerah Istimewa Yogyakarta 55188 |	103 Siswa '); 
+					
+		var marker5 = L.marker([-7.84757827,	110.3586165]); 
+		marker5.addTo(map); 
+		marker5.bindPopup('<h5>SMPN 2 SEWON</h5> JL. Parangtritis Km 6, Panggungharjo, Kec. Sewon, Kabupaten Bantul, Daerah Istimewa Yogyakarta 55188	| 104 Siswa '); 
+		
+		var marker6 = L.marker([-7.85012373,	110.3451768]); 
+		marker6.addTo(map); 
+		marker6.bindPopup('<h5>SMPN 3 SEWON </h5> Jl. Bantul No.KM. 6, RW.7, Kaliputih, Pendowoharjo, Kec. Sewon, Kabupaten Bantul, Daerah Istimewa Yogyakarta 55185	| 61 Siswa'); 
+		
+		var marker7 = L.marker([-7.84980786,	110.3228034]); 
+		marker7.addTo(map); 
+		marker7.bindPopup('<h5>SMPN 4 SEWON </h5> Perumahan Kasongan Permai Jl. Amerta, Banyon, Pendowoharjo, Kec. Sewon, Kabupaten Bantul, Daerah Istimewa Yogyakarta 55185	| 62 Siswa'); 
+		
+		var marker8 = L.marker([-7.800380767,	110.3393636]); 
+		marker8.addTo(map); 
+		marker8.bindPopup('<h5>SMPN 1 KASIHANL</h5> Jl. Wates Jl. Sonopakis Lor No.62, Onggobayan, Ngestiharjo, Kec. Kasihan, Kabupaten Bantul, Daerah Istimewa Yogyakarta 55184	| 78 Siswa'); 
+		
+		var marker9 = L.marker([-7.825715011,	110.327178]); 
+		marker9.addTo(map); 
+		marker9.bindPopup('<h5>SMPN 2 KASIHAN </h5> Jl. Bibis Raya, Jetis, Tamantirto, Kec. Kasihan, Kabupaten Bantul, Daerah Istimewa Yogyakarta 55183 |	60 Siswa'); 
+		
+		var marker10 = L.marker([-7.839869754,	110.3128531]); 
+		marker10.addTo(map); 
+		marker10.bindPopup('<h5>SMPN 3 KASIHAN</h5> Jalan Ngentak, Gendeng, Bangunjiwo, Kec. Kasihan, Kabupaten Bantul, Daerah Istimewa Yogyakarta 55184	| 76 Siswa');
+
+		var marker11 = L.marker([-7.803406771,	110.2739684]); 
+		marker11.addTo(map); 
+		marker11.bindPopup('<h5>SMPN 1 SEDAYU</h5> Jl. Pedes - Nulis, Panggang, Argomulyo, Kec. Sedayu, Kabupaten Bantul, Daerah Istimewa Yogyakarta 55752	| 107 Siswa');
+
+		var marker12 = L.marker([-7.845383938,	110.2369907]); 
+		marker12.addTo(map); 
+		marker12.bindPopup('<h5>SMPN 2 SEDAYU</h5> Bakal, Argodadi, Kec. Sedayu, Kabupaten Bantul, Daerah Istimewa Yogyakarta 55752	| 96 Siswa');
+
+		var marker13 = L.marker([-7.88662336,	110.2735623]); 
+		marker13.addTo(map); 
+		marker13.bindPopup('<h5>SMPN 1 PAJANGAN</h5> JL. Kamijoro, Sendang Sari Pajangan, Kamijoro, Sendangsari, Bantul, Kabupaten Bantul, Daerah Istimewa Yogyakarta 55751	| 78 Siswa');
+
+		var marker14 = L.marker([-7.859165579,	110.26603131]); 
+		marker14.addTo(map); 
+		marker14.bindPopup('<h5>SMPN 2 PAJANGAN</h5> Pajangan, Triwidadi, Kec. Pajangan, Kabupaten Bantul, Daerah Istimewa Yogyakarta 55751	| 95 Siswa');
+
+		var marker15 = L.marker([-7.861575844,	110.29667]); 
+		marker15.addTo(map); 
+		marker15.bindPopup('<h5>SMPN 3 PAJANGAN</h5> Krebet, Sendangsari, Kec. Pajangan, Kabupaten Bantul, Daerah Istimewa Yogyakarta 55751	| 63 Siswa');
+
+		var marker16 = L.marker([-7.906730719,	110.3140297]); 
+		marker16.addTo(map); 
+		marker16.bindPopup('<h5>SMPN 1 PANDAK</h5> Jl. Srandakan KM.1, Karangasem, Gilangharjo, Kec. Pandak, Kabupaten Bantul, Daerah Istimewa Yogyakarta 55761	| 103 Siswa');
+
+		var marker17 = L.marker([-7.940121075,	110.2689484]); 
+		marker17.addTo(map); 
+		marker17.bindPopup('<h5>SMPN 2 PANDAK</h5> Glagahan, Caturharjo, Pandak, Koro Wejang, Caturharjo, Kec. Pandak, Kabupaten Bantul, Daerah Istimewa Yogyakarta 55761	| 77 Siswa');
+
+		var marker18 = L.marker([-7.901791029,	110.2991568]); 
+		marker18.addTo(map); 
+		marker18.bindPopup('<h5>SMPN 3 PANDAK</h5> Jl. Lintas Gesikan - Wijirejo Km. 1, Pandak, Gesikan I, Wijirejo, Kec. Pandak, Kabupaten Bantul, Daerah Istimewa Yogyakarta 55761	| 62 Siswa');
+
+		var marker19 = L.marker([-7.926491086,	110.2981419]); 
+		marker19.addTo(map); 
+		marker19.bindPopup('<h5>SMPN 4 PANDAK</h5> Ngaran, Krekah, Gilangharjo, Kec. Pandak, Kabupaten Bantul, Daerah Istimewa Yogyakarta 55761	| 78 Siswa');
+
+		var marker20 = L.marker([-7.926490969,	110.2981609]); 
+		marker20.addTo(map); 
+		marker20.bindPopup('<h5>SMPN 1 SRANDAKAN</h5> Jl. Nengahan Paten, Srandakan, Trimurti, Kec. Srandakan, Kabupaten Bantul, Daerah Istimewa Yogyakarta 55762	| 93 Siswa');
+
+		var marker21 = L.marker([-7.951752536,	110.2477448]); 
+		marker21.addTo(map); 
+		marker21.bindPopup('<h5>SMPN 2 SRANDAKAN</h5> Godegan, Poncosari, Kec. Srandakan, Kabupaten Bantul, Daerah Istimewa Yogyakarta 55762	| 95 Siswa');
+
+		var marker22 = L.marker([-7.96709772,	110.2657746]); 
+		marker22.addTo(map); 
+		marker22.bindPopup('<h5>SMPN 1 SANDEN</h5> JL. Raya Sanden Murti Gading, Bantul Wr., Bantul, Kec. Bantul, Kabupaten Bantul, Daerah Istimewa Yogyakarta 55711	|  76 Siswa');
+
+		var marker23 = L.marker([-7.97625099,	110.2833288]); 
+		marker23.addTo(map); 
+		marker23.bindPopup('<h5>SMPN 2 SANDEN</h5> Jalan Samas, Srigading, Sanden, Ngunan Unan, Srigading, Bantul, Kabupaten Bantul, Daerah Istimewa Yogyakarta 55763	| 111 Siswa');
+
+		var marker24 = L.marker([-7.977346596, 110.3131822]); 
+		marker24.addTo(map); 
+		marker24.bindPopup('<h5>SMPN 1 KRETEK</h5> Greges, Donotirto, Kecamatan Kretek, Kabupaten Bantul, Daerah Istimewa Yogyakarta 55772	| 77 Siswa');
+
+		var marker25 = L.marker([-7.996086108,	110.3135552]); 
+		marker25.addTo(map); 
+		marker25.bindPopup('<h5>SMPN 2 KRETEK</h5> Kretek, Parangtritis, Kec. Kretek, Kabupaten Bantul, Daerah Istimewa Yogyakarta 55772	| 47 Siswa');
+
+		var marker26 = L.marker([-7.944516883,	110.323165]); 
+		marker26.addTo(map); 
+		marker26.bindPopup('<h5>SMPN 1 BAMBANGLIPUROL</h5> Kraton, Kec. Bambanglipuro, Kabupaten Bantul, Daerah Istimewa Yogyakarta 55764	| 117 Siswa');
+
+		var marker27 = L.marker([-7.956611645,	110.3047104]); 
+		marker27.addTo(map); 
+		marker27.bindPopup('<h5>SMPN 2 BAMBANGLIPURO</h5> Plebengan, Sidomulyo, Kec. Bambanglipuro, Kabupaten Bantul, Daerah Istimewa Yogyakarta	| 78 Siswa');
+
+		var marker28 = L.marker([-7.95860199,	110.3317844]); 
+		marker28.addTo(map); 
+		marker28.bindPopup('<h5>SMPN 1 PUNDONG</h5> Nglembu, Panjangrejo, Kec. Pundong, Kabupaten Gunung Kidul, Daerah Istimewa Yogyakarta 55771	| 107 Siswa');
+
+		var marker29 = L.marker([-7.948242471,	110.3436752]); 
+		marker29.addTo(map); 
+		marker29.bindPopup('<h5>SMPN 2 PUNDONG</h5> Menang, Srihardono, Pundong, Baran, Srihardono, Kec. Pundong, Kabupaten Bantul, Daerah Istimewa Yogyakarta 55771	| 96 Siswa');
+
+		var marker30 = L.marker([-7.917696978,	110.3821126]); 
+		marker30.addTo(map); 
+		marker30.bindPopup('<h5>SMPN 1 IMOGIRI</h5> JL. IMOGIRI KM 12, Paduresan, Imogiri, Kec. Imogiri, Kabupaten Bantul, Daerah Istimewa Yogyakarta 55782	| 104 Siswa');
+
+		var marker31 = L.marker([-7.946251114,	110.3750389]); 
+		marker31.addTo(map); 
+		marker31.bindPopup('<h5>SMPN 2 IMOGIRI</h5> Jl. Imogiri - Siluk, Mojohuro, Sriharjo, Kec. Imogiri, Kabupaten Bantul, Daerah Istimewa Yogyakarta 55782	| 94 Siswa');
+
+		var marker32 = L.marker([-7.95174815,	110.3909989]); 
+		marker32.addTo(map); 
+		marker32.bindPopup('<h5>SMPN 3 IMOGIRI</h5> Jl. Lanteng Selopamioro Imogiri, Lanteng 2, Selopamioro, Kec. Imogiri, Kabupaten Bantul, Daerah Istimewa Yogyakarta 55782	| 47 Siswa');
+
+		var marker33 = L.marker([-7.890799533,	110.3756543]); 
+		marker33.addTo(map); 
+		marker33.bindPopup('<h5>SMPN 1 JETIS</h5> Jl. Imogiri Barat No.Km. 11, Kertan, Sumberagung, Kec. Jetis, Kabupaten Bantul, Daerah Istimewa Yogyakarta 55781	| 92 Siswa');
+
+		var marker34 = L.marker([-7.926041845,	110.3596331]); 
+		marker34.addTo(map); 
+		marker34.bindPopup('<h5>SMPN 2 JETIS</h5> Gaten, Canden, Kec. Jetis, Kabupaten Bantul, Daerah Istimewa Yogyakarta 55781	| 78 Siswa');
+
+		var marker35 = L.marker([-7.926285972,	110.3507288]); 
+		marker35.addTo(map); 
+		marker35.bindPopup('<h5>SMPN 3 JETIS</h5> Jl. Parangtritis KM.14 No.13, Butuh, Patalan, Kec. Jetis, Kabupaten Bantul, Daerah Istimewa Yogyakarta 55781	| 109 Siswa');
+
+		var marker36 = L.marker([-7.869082027,	110.3909201]); 
+		marker36.addTo(map); 
+		marker36.bindPopup('<h5>SMPN 1 PLERET</h5> Jl.Imogiri Timur km10, Ketonggo, Ketongo, Wonokromo, Kec. Pleret, Kabupaten Bantul, Daerah Istimewa Yogyakarta 55791	| 108 Siswa');
+
+		var marker37 = L.marker([-7.866973512,	110.4098307	]); 
+		marker37.addTo(map); 
+		marker37.bindPopup('<h5>SMPN 2 PLERET</h5> Kedaton, Pleret, Kec. Pleret, Kabupaten Bantul, Daerah Istimewa Yogyakarta 55791	|  108 Siswa');
+		
+		var marker38 = L.marker([-7.883216614,	110.414146]); 
+		marker38.addTo(map); 
+		marker38.bindPopup('<h5>SMPN 3 PLERET</h5> Jembangan, Segoroyoso, Pleret, Segoroyoso II, Segoroyoso, Kec. Pleret, Kabupaten Bantul, Daerah Istimewa Yogyakarta 55791	| 55 Siswa');
+
+		var marker39 = L.marker([-7.837413865,	110.4720161]); 
+		marker39.addTo(map); 
+		marker39.bindPopup('<h5>SMPN 1 PIYUNGAN</h5> Jl. Wonosari km No.14, Sandeyan, Srimulyo, Kec. Piyungan, Kabupaten Bantul, Daerah Istimewa Yogyakarta 55792	| 121 Siswa');
+
+		var marker40 = L.marker([-7.827120123,	110.4447827]); 
+		marker40.addTo(map); 
+		marker40.bindPopup('<h5>SMPN 2 PIYUNGAN</h5> Jl. Wonosari KM.10, Sitimulyo Piyungan, Babadan, Sitimulyo, Bantul, Kabupaten Bantul, Daerah Istimewa Yogyakarta 55792	| 76 Siswa');
+
+		var marker41 = L.marker([-7.829511648,	110.4117175]); 
+		marker41.addTo(map); 
+		marker41.bindPopup('<h5>SMPN 1 BANGUNTAPAN</h5> Jl. Karangturi, Tegal Cerme, Manggisan, Baturetno, Banguntapan, Bantul, Daerah Istimewa Yogyakarta 55196	| 117 Siswa');
+
+		var marker42 = L.marker([-7.808507002,	110.4059413]); 
+		marker42.addTo(map); 
+		marker42.bindPopup('<h5>SMPN 2 BANGUNTAPAN</h5> Jl. Karangsari Wetan No.616, Pringgolayan, Banguntapan, Kec. Banguntapan, Kabupaten Bantul, Daerah Istimewa Yogyakarta 55198	| 75 Siswa');
+
+		var marker43 = L.marker([-7.857238201,	110.416982]); 
+		marker43.addTo(map); 
+		marker43.bindPopup('<h5>SMPN 3 BANGUNTAPAN</h5> Jl. Ngablak No.84, Padukuhan Duku, Jambidan, Kapanewon Banguntapan, Kabupaten Bantul, Daerah Istimewa Yogyakarta 55195	| 108 Siswa');
+
+		var marker44 = L.marker([-7.84695341,	110.3839375]); 
+		marker44.addTo(map); 
+		marker44.bindPopup('<h5>SMPN 4 BANGUNTAPAN</h5> Jl. Wijoyo Mulyo No.5, Grojogan, Tamanan, Kec. Banguntapan, Kabupaten Bantul, Daerah Istimewa Yogyakarta 55191	| 61 Siswa');
+
+		var marker45 = L.marker([-7.845539981,	110.4275322]); 
+		marker45.addTo(map); 
+		marker45.bindPopup('<h5>SMPN 5 BANGUNTAPAN</h5> JL Sanggrahan Potorono, Banguntapan, 55196, Nglaren, Potorono, Kec. Banguntapan, Kabupaten Bantul, Daerah Istimewa Yogyakarta 55166	| 62 Siswa');
+
+		var marker46 = L.marker([-7.911192277,	110.4692157]); 
+		marker46.addTo(map); 
+		marker46.bindPopup('<h5>SMPN 1 DLINGO</h5> Kapingan, Temuwuh, Kec. Dlingo, Kabupaten Bantul, Daerah Istimewa Yogyakarta 55783	| 94 Siswa');
+
+		var marker47 = L.marker([-7.933224935,	110.4300554]); 
+		marker47.addTo(map); 
+		marker47.bindPopup('<h5>SMPN 2 DLINGO</h5> Mangunan, Kec. Dlingo, Kabupaten Bantul, Daerah Istimewa Yogyakarta 55783	| 37 Siswa');
+
+
+
+
+		/* Control Layer */
+		var baseMaps = {
+		"OpenStreetMap": basemap2,
+		"CyclOSM": basemap4
+		};
+
+		L.control.layers(baseMaps, ).addTo(map);
+
+		
+
+		
+
+		/* Image Legend */
+		L.Control.Legend = L.Control.extend({
+		onAdd: function(map) {
+		var img = L.DomUtil.create('img');
+		img.src = 'asset/img/legend/legenda.png';
+		img.style.width = '200px';
+		return img;
+		}
+		});
+
+		L.control.Legend = function(opts) {
+		return new L.Control.Legend(opts);
+		}
+
+		L.control.Legend({ position: 'bottomleft' }).addTo(map);
+
+
+
+		/*Plugin Search */
+		var searchControl = new L.Control.Search({
+			position:"topleft",
+			layer: jsonTest1, //Nama variabel layer
+			propertyName: 'KECAMATAN', //Field untuk pencarian
+			marker: false,
+			moveToLocation: function(latlng, title, map) {
+				var zoom = map.getBoundsZoom(latlng.layer.getBounds());
+				map.setView(latlng, zoom);
+			}
+		});
+		searchControl.on('search:locationfound', function(e) {
+			e.layer.setStyle({
+				fillColor: '#ffff00',
+				color: '#0000ff'
+			});
+		}).on('search:collapse', function(e) {
+			featuresLayer.eachLayer(function(layer) {
+				featuresLayer.resetStyle(layer);
+			});
+		});
+		map.addControl(searchControl);
+
+		/*Plugin Geolocation */
+		var locateControl = L.control.locate({
+			position: "topleft",
+			drawCircle: true,
+			follow: true,
+			setView: true,
+			keepCurrentZoomLevel: false,
+			markerStyle: {
+				weight: 1,
+				opacity: 0.8,
+				fillOpacity: 0.8,
+			},
+			circleStyle: {
+				weight: 1,
+				clickable: false,
+			},
+			icon: "fas fa-crosshairs",
+			metric: true,
+			strings: {
+				title: "Click for Your Location",
+				popup: "You're here. Accuracy {distance} {unit}",
+				outsideMapBoundsMsg: "Not available"
+			},
+			locateOptions: {
+				maxZoom: 16,
+				watch: true,
+				enableHighAccuracy: true,
+				maximumAge: 10000,
+				timeout: 10000
+			},
+		}).addTo(map);
+
+		/*Plugin Mouse Position Coordinate */
+		L.control.mousePosition({position:'bottomright',
+		separator: ',',
+		prefix: 'Koordinat : '
+		}).addTo(map);
+
+
+
+		/* Scale Bar */
+		L.control.scale({
+		maxWidth: 150,position:'bottomright'
+		}).addTo(map);
+
+		/*Plugin Measurement Tool */
+		var measureControl = new L.Control.Measure({
+		position:'topright',
+		primaryLengthUnit: 'meters',
+		secondaryLengthUnit: 'kilometers',
+		primaryAreaUnit: 'hectares',
+		secondaryAreaUnit: 'sqmeters',
+		activeColor: '#FF0000',
+		completedColor: '#00FF00'
+		});
+		measureControl.addTo(map);
+
+		/*Plugin EasyPrint */
+		L.easyPrint({
+		title: 'Print'
+		}).addTo(map);
+
+		/* Plugin Routing*/
+		L.Routing.control({
+			autoRoute: true,
+			reverseWaypoints:true,
+			waypoints: [
+				L.latLng(-7.828563469258759, 110.41962898465547)
+			],
+			geocoder: L.Control.Geocoder.nominatim(),
+			routeWhileDragging: true,
+			reverseWaypoints: true,
+			showAlternatives: true,
+			altLineOptions: {
+				styles: [
+					{color: 'black', opacity: 0.15, weight: 9},
+					{color: 'white', opacity: 0.8, weight: 6},
+					{color: 'blue', opacity: 0.5, weight: 2}
+				]
+			}
+		}).addTo(map);
+
+		L.Routing.errorControl(control).addTo(map);
+
+		</script>
+	</body>
+</html>
+
+

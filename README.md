@@ -1,7 +1,7 @@
-### SISTEM INFORMASI ZONASI 
+# SISTEM INFORMASI ZONASI 
 INFOZO merupakan suatu web yang memberikan informasi sistem zonasi di kabupaten Bantul dengan visualisasi peta zonasi dengan menggunakan buffer dan juga tools lainnya yang membantu dalam mengetahui sistem zonasi sekolah menengah pertama yang ada di Bantul
 
-### Tech Stack 🛠️ 
+## Tech Stack 🛠️ 
 <p align="left">
 <img src="https://pbs.twimg.com/profile_images/1545098208556097536/rKXaODLl_400x400.jpg" alt="vcs"  width="45" height="45"/>
 <img src="https://w7.pngwing.com/pngs/952/732/png-transparent-xampp-full-logo-tech-companies-thumbnail.png" alt="xampp"  width="45" height="45"/>
